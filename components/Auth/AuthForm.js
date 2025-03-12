@@ -112,8 +112,8 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
           <View style={styles.button}>
             <Button onPress={submitHandler}>
               {isLogin
-                ? "Log In (Not OAuth)"
-                : "Sign Up with Firebase (Not OAuth)"}
+                ? "Log In (Direct)"
+                : "Sign Up with Firebase (Direct ToDo)"}
             </Button>
           </View>
           <View style={styles.button}>

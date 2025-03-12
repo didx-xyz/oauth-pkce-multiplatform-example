@@ -61,9 +61,14 @@ async function generateRandomString(length) {
 async function signInAsync() {
   const redirectUrl =
     Platform.OS === "web" ? "http://localhost:8081/" : "userauth2://redirect";
-  const authUrl = `https://dev-e8123jjkg2584hsj.us.auth0.com/authorize`;
-  const tokenUrl = "https://dev-e8123jjkg2584hsj.us.auth0.com/oauth/token";
+  const authUrl = `http://keycloak.127.0.0.1.nip.io/auth/realms/mobile/protocol/openid-connect/auth`;
+  const tokenUrl =
+    "http://keycloak.127.0.0.1.nip.io/auth/realms/mobile/protocol/openid-connect/token";
   const clientId = "vfLsrbS8wJ9V7vJt8fzsAo0APuf1kPdn";
+
+  // const authUrl = `https://dev-e8123jjkg2584hsj.us.auth0.com/authorize`;
+  // const tokenUrl = "https://dev-e8123jjkg2584hsj.us.auth0.com/oauth/token";
+  // const clientId = "vfLsrbS8wJ9V7vJt8fzsAo0APuf1kPdn";
 
   const codeVerifier = await generateRandomString(128);
   console.log("Code Verifier:", codeVerifier);
@@ -79,11 +84,19 @@ async function signInAsync() {
 
   if (Platform.OS === "web") {
     // Web-specific flow: Open a popup
+    console.log("Auth Request URL:", authRequestUrl);
+    try {
+      new URL(authRequestUrl);
+      console.log("URL is valid");
+    } catch (e) {
+      console.error("Invalid URL:", e.message);
+    }
     const popup = window.open(
       authRequestUrl,
       "auth0_login",
       "width=500,height=600"
     );
+    console.log("Past line 87");
     if (!popup) {
       console.error("Popup blocked. Please allow popups and try again.");
       return { type: "error", error: "Popup blocked" };
